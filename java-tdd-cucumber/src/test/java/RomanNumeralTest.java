@@ -3,9 +3,9 @@ import org.junit.jupiter.api.Test;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class RomanNumeralTest {
-   @Test 
+    @Test
     public void firstTest() {
-       assertThat(RomanNumeral.convert(0)).isEqualTo("");
-   }
+        assertThat(RomanNumeral.convert(0)).isEqualTo("");
+    }
 
 }

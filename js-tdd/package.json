@@ -1,0 +1,14 @@
+{
+  "name": "js-tdd",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "Julien Jakubowski",
+  "license": "MIT",
+  "scripts": {
+    "test": "jest src --verbose",
+    "test_watch": "jest src --watch --verbose"
+  },
+  "dependencies": {
+    "jest": "^25.2.7"
+  }
+}

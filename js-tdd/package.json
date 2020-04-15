@@ -6,7 +6,7 @@
   "license": "MIT",
   "scripts": {
     "test": "jest src --verbose",
-    "test_watch": "jest src --watch --verbose"
+    "test_watch": "jest src/bank --watch --verbose"
   },
   "dependencies": {
     "jest": "^25.2.7"

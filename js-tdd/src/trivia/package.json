@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "main": "game.js",
   "scripts": {
-    "test:jest": "jest .test.js",
+    "test:watch": "jest --watch --coverage .test.js",
+    "test:jest": "jest --coverage .test.js",
     "test:mocha": "mocha ./spec/*.spec.js"
   },
   "devDependencies": {

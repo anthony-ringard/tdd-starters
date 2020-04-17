@@ -6,8 +6,7 @@
   "license": "MIT",
   "scripts": {
     "test": "jest src --verbose",
-    "test_watch": "jest src/rose/gilded_rose_golden_master.test.js --watch --verbose",
-    "coverage": "jest src/rose/gilded_rose_golden_master.test.js --coverage --verbose"
+    "test_watch": "jest src/trivia/spec/*.test.js --coverage --watch --verbose"
   },
   "dependencies": {
     "jest": "^25.2.7"

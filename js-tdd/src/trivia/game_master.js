@@ -1,4 +1,4 @@
-const Game = function (consoleCustom) {
+const GameMaster = function (consoleCustom) {
 
   var players = new Array()
   var places = new Array(6)
@@ -57,18 +57,14 @@ const Game = function (consoleCustom) {
 
   this.add = function (playerName) {
     players.push(playerName)
-    this.initPlayer()
+    places[this.howManyPlayers() - 1] = 0
+    purses[this.howManyPlayers() - 1] = 0
+    inPenaltyBox[this.howManyPlayers() - 1] = false
 
     consoleCustom.log(playerName + ' was added')
     consoleCustom.log('They are player number ' + players.length)
 
     return true
-  }
-
-  this.initPlayer = function () {
-    places[this.howManyPlayers() - 1] = 0
-    purses[this.howManyPlayers() - 1] = 0
-    inPenaltyBox[this.howManyPlayers() - 1] = false
   }
 
   this.howManyPlayers = function () {
@@ -173,4 +169,4 @@ const Game = function (consoleCustom) {
   }
 }
 
-module.exports = Game
+module.exports = GameMaster

@@ -1,6 +1,7 @@
 'use strict'
 
 const Game = require('../game.js')
+const GameMaster = require('../game_master.js')
 
 describe('The test environment', () => {
   it('should pass', () => {
@@ -12,7 +13,7 @@ describe('The test environment', () => {
   })
 
   it('should add players and display their name and number', ()=>{
-    var game = new Game()
+    var game = new Game(console)
     var consoleValues = [];
     var logMock = function(value) {
         consoleValues.push(value)
@@ -29,4 +30,57 @@ describe('The test environment', () => {
     ])
 
   })
+
+  it('golden master', () => {
+
+    var consoleValues = [];
+    var logMock = {
+      log: function(logMessage) {
+        consoleValues.push(logMessage);
+      }
+    }
+
+    var consoleValuesMaster = [];
+    var logMockMaster = {
+      log: function(logMessage) {
+        consoleValuesMaster.push(logMessage);
+      }
+    }
+
+    var game = new Game(logMock)
+    var gameMaster = new GameMaster(logMockMaster)
+
+    game.add('Chet')
+    game.add('Pat')
+    game.add('Sue')
+  
+    gameMaster.add('Chet')
+    gameMaster.add('Pat')
+    gameMaster.add('Sue')
+
+
+    var notAWinner = false
+    var notAWinnerMaster = false
+
+
+    do {
+      var random = Math.random(); 
+
+      game.roll(Math.floor(random * 6) + 1)
+      gameMaster.roll(Math.floor(random * 6) + 1)
+    
+      if (Math.floor(Math.random() * 10) == 7) {
+        notAWinner = game.wrongAnswer()
+        notAWinnerMaster = gameMaster.wrongAnswer()
+      } else {
+        notAWinner = game.wasCorrectlyAnswered()
+        notAWinnerMaster = gameMaster.wasCorrectlyAnswered()
+      }
+
+    } while (notAWinner)
+
+    expect(consoleValues).toEqual(consoleValuesMaster);
+
+  })
+
 })

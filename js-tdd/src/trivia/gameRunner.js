@@ -4,7 +4,7 @@ const Game = require('./game.js')
 
 var notAWinner = false
 
-var game = new Game()
+var game = new Game(console)
 
 game.add('Chet')
 game.add('Pat')

@@ -83,4 +83,39 @@ describe('The test environment', () => {
 
   })
 
+  it('should return correct answer', () => {
+    var game = new Game(console)
+    var consoleValues = [];
+    var logMock = function(value) {
+        consoleValues.push(value)
+    }
+    console.log = logMock
+
+    game.add('Julien')
+    game.add('Marvin')
+
+    game.wasCorrectlyAnswered()
+    expect(consoleValues).toEqual(["Julien was added",
+    "They are player number 1",
+       "Marvin was added",
+       "They are player number 2",
+       "Answer was correct!!!!",
+       "Julien now has 1 Gold Coins."])
+  })
+
+  it('should return instanciate questions', () => {
+    var game = new Game(console)
+    var consoleValues = [];
+    var logMock = function(value) {
+        consoleValues.push(value)
+    }
+    console.log = logMock
+
+    game.add('Julien')
+    game.add('Marvin')
+
+    game.wasCorrectlyAnswered()
+    expect(consoleValues).toEqual([])
+  })
+
 })

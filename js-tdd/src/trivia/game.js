@@ -3,51 +3,68 @@ const Game = function (consoleCustom) {
   var players = new Array()
   var places = new Array(6)
   var purses = new Array(6)
-  var inPenaltyBox = new Array(6)
-
-  var popQuestions = new Array()
-  var scienceQuestions = new Array()
-  var sportsQuestions = new Array()
-  var rockQuestions = new Array()
+  var inPenaltyBox = new Array(6) 
 
   var currentPlayer = 0
   var isGettingOutOfPenaltyBox = false
+
+  var categories = {
+      popQuestions: [],
+      scienceQuestions: [],
+      sportsQuestions: [],
+      rockQuestions: []
+  }
+
+  var test = [
+    {
+      category: 'Pop',
+      questions: []
+    },
+    {
+      category: 'Science',
+      questions: []
+    },
+    {
+      category: 'Sports',
+      questions: []
+    },
+    {
+      category: 'Rock',
+      questions: []
+    },
+  ]
+
+  const popCategories = [0, 4, 8]
+  const scienceCategories = [1, 5, 9]
+  const sportCategories = [2, 6, 10]
 
   var didPlayerWin = function () {
     return !(purses[currentPlayer] == 6)
   }
 
   var currentCategory = function () {
-    if (places[currentPlayer] == 0)
+
+    if (popCategories.includes(places[currentPlayer]))
       return 'Pop'
-    if (places[currentPlayer] == 4)
-      return 'Pop'
-    if (places[currentPlayer] == 8)
-      return 'Pop'
-    if (places[currentPlayer] == 1)
+    if (scienceCategories.includes(places[currentPlayer]))
       return 'Science'
-    if (places[currentPlayer] == 5)
-      return 'Science'
-    if (places[currentPlayer] == 9)
-      return 'Science'
-    if (places[currentPlayer] == 2)
+    if (sportCategories.includes(places[currentPlayer]))
       return 'Sports'
-    if (places[currentPlayer] == 6)
-      return 'Sports'
-    if (places[currentPlayer] == 10)
-      return 'Sports'
-    return 'Rock'
+      
+    return 'Rock' 
   }
 
   this.createRockQuestion = function (index) {
     return 'Rock Question ' + index
   }
 
+ 
+
   for (var i = 0; i < 50; i++) {
-    popQuestions.push('Pop Question ' + i)
-    scienceQuestions.push('Science Question ' + i)
-    sportsQuestions.push('Sports Question ' + i)
-    rockQuestions.push(this.createRockQuestion(i))
+    categories.popQuestions.push('Pop Question ' + i)
+    categories.scienceQuestions.push('Science Question ' + i)
+    categories.sportsQuestions.push('Sports Question ' + i)
+    categories.rockQuestions.push(this.createRockQuestion(i))
   }
 
 
@@ -77,14 +94,15 @@ const Game = function (consoleCustom) {
 
 
   var askQuestion = function () {
+    
     if (currentCategory() == 'Pop')
-      consoleCustom.log(popQuestions.shift())
+      consoleCustom.log(categories.popQuestions.shift())
     if (currentCategory() == 'Science')
-      consoleCustom.log(scienceQuestions.shift())
+      consoleCustom.log(categories.scienceQuestions.shift())
     if (currentCategory() == 'Sports')
-      consoleCustom.log(sportsQuestions.shift())
+      consoleCustom.log(categories.sportsQuestions.shift())
     if (currentCategory() == 'Rock')
-      consoleCustom.log(rockQuestions.shift())
+      consoleCustom.log(categories.rockQuestions.shift())
   }
 
   this.roll = function (roll) {

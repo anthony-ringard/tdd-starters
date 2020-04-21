@@ -84,12 +84,14 @@ describe('The test environment', () => {
   })
 
   it('should return correct answer', () => {
-    var game = new Game(console)
+    
     var consoleValues = [];
-    var logMock = function(value) {
-        consoleValues.push(value)
+    var logMock = {
+      log: function(logMessage) {
+        consoleValues.push(logMessage);
+      }
     }
-    console.log = logMock
+    var game = new Game(logMock)
 
     game.add('Julien')
     game.add('Marvin')
@@ -105,17 +107,139 @@ describe('The test environment', () => {
 
   it('should return instanciate questions', () => {
     var game = new Game(console)
-    var consoleValues = [];
-    var logMock = function(value) {
-        consoleValues.push(value)
-    }
-    console.log = logMock
+    
+    expect(game.getCategories().popQuestions.length).toEqual(50)
+    expect(game.getCategories().rockQuestions.length).toEqual(50)
+    expect(game.getCategories().scienceQuestions.length).toEqual(50)
+    expect(game.getCategories().sportsQuestions.length).toEqual(50)
+  })
+
+
+  it('should user with penaltyBox after wrong answer', () => {
+    var game = new Game(console)
 
     game.add('Julien')
     game.add('Marvin')
 
-    game.wasCorrectlyAnswered()
-    expect(consoleValues).toEqual([])
+    game.roll(1)
+    game.wrongAnswer()
+
+
+
+    expect(game.isPlayerInPenaltyBox(0)).toBe(true);
+  
   })
+
+
+  // it('should usergo out penaltyBox with good answer', () => {
+  //   var game = new Game(console)
+
+  //   game.add('Julien')
+  //   game.add('Marvin')
+
+  //   game.roll(1)
+  //   game.wrongAnswer()
+
+    
+  //   game.roll(5);
+  //   game.wasCorrectlyAnswered()
+
+
+  //   expect(game.isPlayerInPenaltyBox(0)).toBe(true);
+  
+  // })
+
+  it('should change player', () => {
+    var game = new Game(console)
+
+    game.add('Julien')
+    game.add('Marvin')
+    game.add('Rachid')
+
+    expect(game.getCurrentPlayer()).toEqual(0);
+
+    game.roll(5);
+    game.wasCorrectlyAnswered()
+
+  
+    expect(game.getCurrentPlayer()).toEqual(1);
+
+    game.roll(5);
+    game.wrongAnswer()
+
+  
+    expect(game.getCurrentPlayer()).toEqual(2);
+
+    game.roll(4);
+    game.wrongAnswer()
+
+  
+    expect(game.getCurrentPlayer()).toEqual(0);
+  
+  })
+
+
+  it('should increment places', () => {
+    var game = new Game(console)
+
+    game.add('Julien')
+    game.add('Marvin')
+
+    game.roll(6);
+
+    expect(game.getCurrentPlayerPlace()).toEqual(6);
+
+    game.wasCorrectlyAnswered()
+    game.roll(6);
+    game.wasCorrectlyAnswered()
+    game.roll(6);
+
+    expect(game.getCurrentPlayerPlace()).toEqual(0);
+  })
+
+
+  it('should increment places when go out of penalty box', () => {
+    var game = new Game(console)
+
+    game.add('Julien')
+    game.add('Marvin')
+
+    game.roll(6);
+    game.wrongAnswer()
+    game.roll(6);
+    game.wasCorrectlyAnswered()
+    game.roll(5);
+    game.wrongAnswer()
+    game.roll(6);
+    game.wasCorrectlyAnswered()
+    game.roll(6);
+    game.wasCorrectlyAnswered()
+
+    expect(game.getCurrentPlayerPlace()).toEqual(0);
+  })
+
+  it('should increment purse when go out of penalty box', () => {
+    var game = new Game(console)
+
+    game.add('Julien')
+    game.add('Marvin')
+
+    game.roll(6);
+    game.wasCorrectlyAnswered()
+  
+    expect(game.getPlayerPurse(0)).toEqual(1);
+  
+    game.roll(6);
+    game.wrongAnswer()
+
+    game.roll(6);
+    game.wasCorrectlyAnswered()
+
+    game.roll(5);
+    game.wasCorrectlyAnswered()
+
+    expect(game.getPlayerPurse(1)).toEqual(1);
+  })
+
 
 })

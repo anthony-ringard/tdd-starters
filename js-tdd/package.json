@@ -6,7 +6,7 @@
   "license": "MIT",
   "scripts": {
     "test": "jest src --verbose",
-    "test_watch": "jest src/trivia/spec/*.test.js --coverage --watch --verbose"
+    "test_watch": "jest src/fooBarQix/*.test.js --coverage --watch --verbose"
   },
   "dependencies": {
     "jest": "^25.2.7"

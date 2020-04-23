@@ -1,7 +1,11 @@
 
+const Player = require('./player.js')
+const Category = require('./category.js')
+
 const popCategories = [0, 4, 8]
 const scienceCategories = [1, 5, 9]
 const sportCategories = [2, 6, 10]
+const rockCategories = [3, 7, 11]
 
 const CATEGORY_POP = 'Pop';
 const CATEGORY_SCIENCE = 'Science';
@@ -10,32 +14,20 @@ const CATEGORY_ROCK = 'Rock';
 
 class TrivialGame {
 
-
   constructor(consoleCustom) {
     this.console = consoleCustom;
 
     this.players = new Array()
-    this.places = new Array(6)
-    this.purses = new Array(6)
-    this.inPenaltyBox = new Array(6)
   
     this.currentPlayer = 0
     this.isGettingOutOfPenaltyBox = false
   
-    this.categories = {
-      popQuestions: [],
-      scienceQuestions: [],
-      sportsQuestions: [],
-      rockQuestions: []
-    }
-
-    for (var i = 0; i < 50; i++) {
-      this.categories.popQuestions.push('Pop Question ' + i)
-      this.categories.scienceQuestions.push('Science Question ' + i)
-      this.categories.sportsQuestions.push('Sports Question ' + i)
-      this.categories.rockQuestions.push('Rock Question ' + i)
-    }
-
+    this.categories = [
+      new Category(CATEGORY_POP, [0, 4, 8]),
+      new Category(CATEGORY_SCIENCE, [1, 5, 9]),
+      new Category(CATEGORY_SPORT, [2, 6, 10]),
+      new Category(CATEGORY_ROCK, [3, 7, 11]),
+    ]
   }
 
   getCategories() {
@@ -44,88 +36,81 @@ class TrivialGame {
 
 
   isCurrentPlayerWinTheGame() {
-    return !(this.purses[this.currentPlayer] == 6)
+    return !(this.getCurrentPlayer().getPurse() == 6)
   }
 
   getCurrentCategoryByCurrentPlayerPlace() {
+    var searchedCategory = null;
 
-    if (popCategories.includes(this.places[this.currentPlayer]))
-      return CATEGORY_POP
-    if (scienceCategories.includes(this.places[this.currentPlayer]))
-      return CATEGORY_SCIENCE
-    if (sportCategories.includes(this.places[this.currentPlayer]))
-      return CATEGORY_SPORT
+    this.categories.forEach( category => {
+        if(category.isInPlace(this.getCurrentPlayerPlace())) {
+          searchedCategory = category
+        }
+    }) 
 
-    return CATEGORY_ROCK
+    return searchedCategory
   }
 
   isPlayable(howManyPlayers) {
     return howManyPlayers >= 2
   }
 
-  add(playerName) {
-    this.players.push(playerName)
-    this.initPlayer()
+  addPlayer(playerName) {
+    this.players.push(new Player(playerName))
 
     this.console.log(playerName + ' was added')
-    this.console.log('They are player number ' + this.players.length)
+    this.console.log('They are player number ' + this.getNumberOfPlayers())
 
     return true
   }
 
-  initPlayer() {
-    this.places[this.howManyPlayers() - 1] = 0
-    this.purses[this.howManyPlayers() - 1] = 0
-    this.inPenaltyBox[this.howManyPlayers() - 1] = false
-  }
-
-  howManyPlayers() {
+  getNumberOfPlayers() {
     return this.players.length
   }
 
-
-  askQuestion() {
-
-    if (this.getCurrentCategoryByCurrentPlayerPlace() == CATEGORY_POP)
-      this.console.log(this.categories.popQuestions.shift())
-    if (this.getCurrentCategoryByCurrentPlayerPlace() == CATEGORY_SCIENCE)
-      this.console.log(this.categories.scienceQuestions.shift())
-    if (this.getCurrentCategoryByCurrentPlayerPlace() == CATEGORY_SPORT)
-      this.console.log(this.categories.sportsQuestions.shift())
-    if (this.getCurrentCategoryByCurrentPlayerPlace() == CATEGORY_ROCK)
-      this.console.log(this.categories.rockQuestions.shift())
+  askCurrentCategoryQuestion() {
+    
+    this.console.log(this.getCurrentCategoryByCurrentPlayerPlace().shiftQuestion())
   }
 
-  roll(roll) {
-    this.console.log(this.players[this.currentPlayer] + ' is the current player')
+  play(roll) {
+    this.console.log(this.getCurrentPlayerName() + ' is the current player')
     this.console.log('They have rolled a ' + roll)
 
-    if (this.isPlayerInPenaltyBox(this.currentPlayer)) {
-      if (roll % 2 != 0) {
+    if (this.isCurrentPlayerInPenaltyBox()) {
+
+      if(!this.isPairRolled(roll)) {
         this.isGettingOutOfPenaltyBox = true
-
-        this.console.log(this.players[this.currentPlayer] + ' is getting out of the penalty box')
-
+        this.console.log(this.getCurrentPlayerName() + ' is getting out of the penalty box')
+  
         this.moveCurrentPlayerPlace(roll)
-
-        this.askQuestion()
+        this.askCurrentCategoryQuestion()
       } else {
-        this.console.log(this.players[this.currentPlayer] + ' is not getting out of the penalty box')
+        this.console.log(this.getCurrentPlayerName() + ' is not getting out of the penalty box')
         this.isGettingOutOfPenaltyBox = false
       }
-    } else {
 
+    } 
+  
+    if (!this.isCurrentPlayerInPenaltyBox()) {
       this.moveCurrentPlayerPlace(roll)
-
-      this.askQuestion()
+      this.askCurrentCategoryQuestion()
     }
   }
 
-  isPlayerInPenaltyBox(playerIndex) {
-    return this.inPenaltyBox[playerIndex];
+  isPairRolled(roll) {
+      return roll % 2 == 0
   }
 
-  wasCorrectlyAnswered() {
+  isCurrentPlayerInPenaltyBox() {
+    return this.isPlayerInPenaltyBox(this.currentPlayer)
+  }
+
+  isPlayerInPenaltyBox(playerIndex) {
+    return this.players[playerIndex].isInPenaltyBox();
+  }
+
+  correctAnswer() {
 
     if (this.isPlayerInPenaltyBox(this.currentPlayer) && !this.isGettingOutOfPenaltyBox) {
       this.switchPlayer()
@@ -142,20 +127,23 @@ class TrivialGame {
   }
 
   addCoin() {
-    this.purses[this.currentPlayer] += 1
-    this.console.log(this.players[this.currentPlayer] + ' now has ' + this.purses[this.currentPlayer] + ' Gold Coins.')
+    this.getCurrentPlayer().setPurse(this.getCurrentPlayer().getPurse() + 1);
+    this.console.log(this.getCurrentPlayerName() + ' now has ' + this.getCurrentPlayer().getPurse() + ' Gold Coins.')
   }
 
   wrongAnswer() {
     this.console.log('Question was incorrectly answered')
-    this.console.log(this.players[this.currentPlayer] + ' was sent to the penalty box')
-    this.inPenaltyBox[this.currentPlayer] = true
+    this.console.log(this.getCurrentPlayerName() + ' was sent to the penalty box')
+    this.getCurrentPlayer().setInPenaltyBox(true)
 
     this.switchPlayer()
     return true
   }
 
   getCurrentPlayer() {
+    return this.players[this.currentPlayer];
+  }
+  getCurrentPlayerIndex() {
     return this.currentPlayer;
   }
 
@@ -168,20 +156,24 @@ class TrivialGame {
   }
 
   getCurrentPlayerPlace() {
-    return this.places[this.currentPlayer];
+    return this.getCurrentPlayer().getPlace()
   }
 
   getPlayerPurse(playerIndex) {
-    return this.purses[playerIndex];
+    return this.players[playerIndex].getPurse();
+  }
+
+  getCurrentPlayerName() {
+    return this.getCurrentPlayer().getName()
   }
 
   moveCurrentPlayerPlace(roll) {
-    this.places[this.currentPlayer] = this.places[this.currentPlayer] + roll
-    if (this.places[this.currentPlayer] > 11) {
-      this.places[this.currentPlayer] = this.places[this.currentPlayer] - 12
+    this.getCurrentPlayer().setPlace(this.getCurrentPlayerPlace() + roll)
+    if (this.getCurrentPlayerPlace() > 11) {
+      this.getCurrentPlayer().setPlace(this.getCurrentPlayerPlace() - 12)
     }
-    this.console.log(this.players[this.currentPlayer] + '\'s new location is ' + this.places[this.currentPlayer])
-    this.console.log('The category is ' + this.getCurrentCategoryByCurrentPlayerPlace())
+    this.console.log(this.getCurrentPlayerName() + '\'s new location is ' + this.getCurrentPlayerPlace())
+    this.console.log('The category is ' + this.getCurrentCategoryByCurrentPlayerPlace().getName())
   }
 
 }

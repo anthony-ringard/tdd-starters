@@ -20,8 +20,8 @@ describe('The test environment', () => {
     }
     console.log = logMock
 
-    expect(game.add('Julien')).toBe(true)
-    expect(game.add('Marvin')).toBe(true)
+    expect(game.addPlayer('Julien')).toBe(true)
+    expect(game.addPlayer('Marvin')).toBe(true)
     expect(consoleValues).toEqual([
       'Julien was added',
       "They are player number 1",
@@ -50,9 +50,9 @@ describe('The test environment', () => {
     var game = new TrivialGame(logMock)
     var gameMaster = new GameMaster(logMockMaster)
 
-    game.add('Chet')
-    game.add('Pat')
-    game.add('Sue')
+    game.addPlayer('Chet')
+    game.addPlayer('Pat')
+    game.addPlayer('Sue')
   
     gameMaster.add('Chet')
     gameMaster.add('Pat')
@@ -66,14 +66,14 @@ describe('The test environment', () => {
     do {
       var random = Math.random(); 
 
-      game.roll(Math.floor(random * 6) + 1)
+      game.play(Math.floor(random * 6) + 1)
       gameMaster.roll(Math.floor(random * 6) + 1)
     
       if (Math.floor(Math.random() * 10) == 7) {
         notAWinner = game.wrongAnswer()
         notAWinnerMaster = gameMaster.wrongAnswer()
       } else {
-        notAWinner = game.wasCorrectlyAnswered()
+        notAWinner = game.correctAnswer()
         notAWinnerMaster = gameMaster.wasCorrectlyAnswered()
       }
 
@@ -93,10 +93,10 @@ describe('The test environment', () => {
     }
     var game = new TrivialGame(logMock)
 
-    game.add('Julien')
-    game.add('Marvin')
+    game.addPlayer('Julien')
+    game.addPlayer('Marvin')
 
-    game.wasCorrectlyAnswered()
+    game.correctAnswer()
     expect(consoleValues).toEqual(["Julien was added",
     "They are player number 1",
        "Marvin was added",
@@ -107,24 +107,21 @@ describe('The test environment', () => {
 
   it('should return instanciate questions', () => {
     var game = new TrivialGame(console)
-    
-    expect(game.getCategories().popQuestions.length).toEqual(50)
-    expect(game.getCategories().rockQuestions.length).toEqual(50)
-    expect(game.getCategories().scienceQuestions.length).toEqual(50)
-    expect(game.getCategories().sportsQuestions.length).toEqual(50)
+
+    game.getCategories().forEach(category => {
+      expect(category.getQuestions().length).toEqual(50)
+    })
   })
 
 
   it('should user with penaltyBox after wrong answer', () => {
     var game = new TrivialGame(console)
 
-    game.add('Julien')
-    game.add('Marvin')
+    game.addPlayer('Julien')
+    game.addPlayer('Marvin')
 
-    game.roll(1)
+    game.play(1)
     game.wrongAnswer()
-
-
 
     expect(game.isPlayerInPenaltyBox(0)).toBe(true);
   
@@ -152,29 +149,29 @@ describe('The test environment', () => {
   it('should change player', () => {
     var game = new TrivialGame(console)
 
-    game.add('Julien')
-    game.add('Marvin')
-    game.add('Rachid')
+    game.addPlayer('Julien')
+    game.addPlayer('Marvin')
+    game.addPlayer('Rachid')
 
-    expect(game.getCurrentPlayer()).toEqual(0);
+    expect(game.getCurrentPlayerIndex()).toEqual(0);
 
-    game.roll(5);
-    game.wasCorrectlyAnswered()
+    game.play(5);
+    game.correctAnswer()
 
   
-    expect(game.getCurrentPlayer()).toEqual(1);
+    expect(game.getCurrentPlayerIndex()).toEqual(1);
 
-    game.roll(5);
+    game.play(5);
     game.wrongAnswer()
 
   
-    expect(game.getCurrentPlayer()).toEqual(2);
+    expect(game.getCurrentPlayerIndex()).toEqual(2);
 
-    game.roll(4);
+    game.play(4);
     game.wrongAnswer()
 
   
-    expect(game.getCurrentPlayer()).toEqual(0);
+    expect(game.getCurrentPlayerIndex()).toEqual(0);
   
   })
 
@@ -182,17 +179,17 @@ describe('The test environment', () => {
   it('should increment places', () => {
     var game = new TrivialGame(console)
 
-    game.add('Julien')
-    game.add('Marvin')
+    game.addPlayer('Julien')
+    game.addPlayer('Marvin')
 
-    game.roll(6);
+    game.play(6);
 
     expect(game.getCurrentPlayerPlace()).toEqual(6);
 
-    game.wasCorrectlyAnswered()
-    game.roll(6);
-    game.wasCorrectlyAnswered()
-    game.roll(6);
+    game.correctAnswer()
+    game.play(6);
+    game.correctAnswer()
+    game.play(6);
 
     expect(game.getCurrentPlayerPlace()).toEqual(0);
   })
@@ -201,19 +198,19 @@ describe('The test environment', () => {
   it('should increment places when go out of penalty box', () => {
     var game = new TrivialGame(console)
 
-    game.add('Julien')
-    game.add('Marvin')
+    game.addPlayer('Julien')
+    game.addPlayer('Marvin')
 
-    game.roll(6);
+    game.play(6);
     game.wrongAnswer()
-    game.roll(6);
-    game.wasCorrectlyAnswered()
-    game.roll(5);
+    game.play(6);
+    game.correctAnswer()
+    game.play(5);
     game.wrongAnswer()
-    game.roll(6);
-    game.wasCorrectlyAnswered()
-    game.roll(6);
-    game.wasCorrectlyAnswered()
+    game.play(6);
+    game.correctAnswer()
+    game.play(6);
+    game.correctAnswer()
 
     expect(game.getCurrentPlayerPlace()).toEqual(0);
   })
@@ -221,22 +218,22 @@ describe('The test environment', () => {
   it('should increment purse when go out of penalty box', () => {
     var game = new TrivialGame(console)
 
-    game.add('Julien')
-    game.add('Marvin')
+    game.addPlayer('Julien')
+    game.addPlayer('Marvin')
 
-    game.roll(6);
-    game.wasCorrectlyAnswered()
+    game.play(6);
+    game.correctAnswer()
   
     expect(game.getPlayerPurse(0)).toEqual(1);
   
-    game.roll(6);
+    game.play(6);
     game.wrongAnswer()
 
-    game.roll(6);
-    game.wasCorrectlyAnswered()
+    game.play(6);
+    game.correctAnswer()
 
-    game.roll(5);
-    game.wasCorrectlyAnswered()
+    game.play(5);
+    game.correctAnswer()
 
     expect(game.getPlayerPurse(1)).toEqual(1);
   })

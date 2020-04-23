@@ -1,10 +1,10 @@
 'use strict'
 
-const Game = require('./game.js')
+const TrivialGame = require('./game.js')
 
 var notAWinner = false
 
-var game = new Game(console)
+var game = new TrivialGame(console)
 
 game.add('Chet')
 game.add('Pat')

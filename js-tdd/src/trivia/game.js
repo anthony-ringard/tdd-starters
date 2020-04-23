@@ -1,4 +1,4 @@
-const Game = function (consoleCustom) {
+const TrivialGame = function (consoleCustom) {
 
   var players = new Array()
   var places = new Array(6)
@@ -9,34 +9,22 @@ const Game = function (consoleCustom) {
   var isGettingOutOfPenaltyBox = false
 
   var categories = {
-      popQuestions: [],
-      scienceQuestions: [],
+    popQuestions: [],
+    scienceQuestions: [],
       sportsQuestions: [],
       rockQuestions: []
   }
 
-  // var test = {
-  //   pop: {
-  //     category: 'Pop',
-  //     questions: []
-  //   },
-  //   science: {
-  //     category: 'Science',
-  //     questions: []
-  //   },
-  //   sports: {
-  //     category: 'Sports',
-  //     questions: []
-  //   },
-  //   rock: {
-  //     category: 'Rock',
-  //     questions: []
-  //   },
-  // }
 
   const popCategories = [0, 4, 8]
   const scienceCategories = [1, 5, 9]
   const sportCategories = [2, 6, 10]
+
+
+  const CATEGORY_POP = 'Pop';
+  const CATEGORY_SCIENCE = 'Science';
+  const CATEGORY_SPORT = 'Sports';
+  const CATEGORY_ROCK = 'Rock';
 
   this.getCategories = function (){
     return categories;
@@ -50,28 +38,16 @@ const Game = function (consoleCustom) {
   var currentCategory = function () {
 
     if (popCategories.includes(places[currentPlayer]))
-      return 'Pop'
+      return CATEGORY_POP
     if (scienceCategories.includes(places[currentPlayer]))
-      return 'Science'
+      return CATEGORY_SCIENCE
     if (sportCategories.includes(places[currentPlayer]))
-      return 'Sports'
+      return CATEGORY_SPORT
       
-    return 'Rock' 
+    return CATEGORY_ROCK
   }
 
-  // Object.keys(test).forEach(cat => {
-  //   console.log(cat);
-  //   for (var i = 0; i < 50; i++) {
-  //     cat.questions.push(cat.category + ' Question ' + i)
-  //   }
-  // });
- 
-  // Object.keys(test).forEach(cat => {
-  //   console.log(cat);
-  //   for (var i = 0; i < 50; i++) {
-  //     cat.questions.push(cat.category + ' Question ' + i)
-  //   }
-  // });
+
 
   for (var i = 0; i < 50; i++) {
     categories.popQuestions.push('Pop Question ' + i)
@@ -108,13 +84,13 @@ const Game = function (consoleCustom) {
 
   var askQuestion = function () {
     
-    if (currentCategory() == 'Pop')
+    if (currentCategory() == CATEGORY_POP)
       consoleCustom.log(categories.popQuestions.shift())
-    if (currentCategory() == 'Science')
+    if (currentCategory() == CATEGORY_SCIENCE )
       consoleCustom.log(categories.scienceQuestions.shift())
-    if (currentCategory() == 'Sports')
+    if (currentCategory() == CATEGORY_SPORT)
       consoleCustom.log(categories.sportsQuestions.shift())
-    if (currentCategory() == 'Rock')
+    if (currentCategory() == CATEGORY_ROCK)
       consoleCustom.log(categories.rockQuestions.shift())
   }
 
@@ -147,36 +123,25 @@ const Game = function (consoleCustom) {
     return inPenaltyBox[playerIndex];
   }
 
-  this.wasCorrectlyAnswered = function () {
-    if (this.isPlayerInPenaltyBox(currentPlayer)) {
-      if (isGettingOutOfPenaltyBox) {
-        consoleCustom.log('Answer was correct!!!!')
-        purses[currentPlayer] += 1
-        consoleCustom.log(players[currentPlayer] + ' now has ' +
-          purses[currentPlayer] + ' Gold Coins.')
+  this.wasCorrectlyAnswered = function () { 
 
-        var winner = didPlayerWin()
-        switchPlayer()
-
-        return winner
-      } else {
-        switchPlayer()
-        return true
-      }
-
-
-    } else {
-
-      consoleCustom.log('Answer was correct!!!!')
-      purses[currentPlayer] += 1
-      consoleCustom.log(players[currentPlayer] + ' now has ' +
-      purses[currentPlayer] + ' Gold Coins.')
-     
-      var winner = didPlayerWin()
+    if (this.isPlayerInPenaltyBox(currentPlayer) && !isGettingOutOfPenaltyBox){
       switchPlayer()
-
-      return winner
+      return true
     }
+
+    consoleCustom.log('Answer was correct!!!!')
+    this.addCoin();
+
+    var winner = didPlayerWin()
+    switchPlayer()
+
+    return winner
+  }
+
+  this.addCoin = function () {
+    purses[currentPlayer] += 1
+    consoleCustom.log(players[currentPlayer] + ' now has ' + purses[currentPlayer] + ' Gold Coins.')
   }
 
   this.wrongAnswer = function () {
@@ -186,7 +151,7 @@ const Game = function (consoleCustom) {
 
     switchPlayer()
     return true
-  }
+  } 
 
   this.getCurrentPlayer = function() {
     return currentPlayer;
@@ -198,15 +163,15 @@ const Game = function (consoleCustom) {
     if (currentPlayer == players.length) {
       currentPlayer = 0
     }
-  }
+  } 
 
   this.getCurrentPlayerPlace = function() {
     return places[currentPlayer];
-  }
+  } 
 
   this.getPlayerPurse = function(playerIndex) {
     return purses[playerIndex];
-  }
+  } 
 
   var moveCurrentPlayerPlace = function(roll) {
     places[currentPlayer] = places[currentPlayer] + roll
@@ -219,4 +184,4 @@ const Game = function (consoleCustom) {
 
 }
 
-module.exports = Game
+module.exports = TrivialGame

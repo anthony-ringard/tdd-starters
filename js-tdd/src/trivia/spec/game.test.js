@@ -1,6 +1,6 @@
 'use strict'
 
-const Game = require('../game.js')
+const TrivialGame = require('../game.js')
 const GameMaster = require('../game_master.js')
 
 describe('The test environment', () => {
@@ -9,11 +9,11 @@ describe('The test environment', () => {
   })
 
   it('should access game', () => {
-    expect(Game).toBeDefined();
+    expect(GameMaster).toBeDefined();
   })
 
   it('should add players and display their name and number', ()=>{
-    var game = new Game(console)
+    var game = new TrivialGame(console)
     var consoleValues = [];
     var logMock = function(value) {
         consoleValues.push(value)
@@ -47,7 +47,7 @@ describe('The test environment', () => {
       }
     }
 
-    var game = new Game(logMock)
+    var game = new TrivialGame(logMock)
     var gameMaster = new GameMaster(logMockMaster)
 
     game.add('Chet')
@@ -91,7 +91,7 @@ describe('The test environment', () => {
         consoleValues.push(logMessage);
       }
     }
-    var game = new Game(logMock)
+    var game = new TrivialGame(logMock)
 
     game.add('Julien')
     game.add('Marvin')
@@ -106,7 +106,7 @@ describe('The test environment', () => {
   })
 
   it('should return instanciate questions', () => {
-    var game = new Game(console)
+    var game = new TrivialGame(console)
     
     expect(game.getCategories().popQuestions.length).toEqual(50)
     expect(game.getCategories().rockQuestions.length).toEqual(50)
@@ -116,7 +116,7 @@ describe('The test environment', () => {
 
 
   it('should user with penaltyBox after wrong answer', () => {
-    var game = new Game(console)
+    var game = new TrivialGame(console)
 
     game.add('Julien')
     game.add('Marvin')
@@ -150,7 +150,7 @@ describe('The test environment', () => {
   // })
 
   it('should change player', () => {
-    var game = new Game(console)
+    var game = new TrivialGame(console)
 
     game.add('Julien')
     game.add('Marvin')
@@ -180,7 +180,7 @@ describe('The test environment', () => {
 
 
   it('should increment places', () => {
-    var game = new Game(console)
+    var game = new TrivialGame(console)
 
     game.add('Julien')
     game.add('Marvin')
@@ -199,7 +199,7 @@ describe('The test environment', () => {
 
 
   it('should increment places when go out of penalty box', () => {
-    var game = new Game(console)
+    var game = new TrivialGame(console)
 
     game.add('Julien')
     game.add('Marvin')
@@ -219,7 +219,7 @@ describe('The test environment', () => {
   })
 
   it('should increment purse when go out of penalty box', () => {
-    var game = new Game(console)
+    var game = new TrivialGame(console)
 
     game.add('Julien')
     game.add('Marvin')

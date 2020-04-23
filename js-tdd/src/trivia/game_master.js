@@ -17,7 +17,7 @@ const GameMaster = function (consoleCustom) {
     return !(purses[currentPlayer] == 6)
   }
 
-  var currentCategory = function () {
+  var getCurrentCategoryByCurrentPlayerPlace = function () {
     if (places[currentPlayer] == 0)
       return 'Pop'
     if (places[currentPlayer] == 4)
@@ -73,13 +73,13 @@ const GameMaster = function (consoleCustom) {
 
 
   var askQuestion = function () {
-    if (currentCategory() == 'Pop')
+    if (getCurrentCategoryByCurrentPlayerPlace() == 'Pop')
       consoleCustom.log(popQuestions.shift())
-    if (currentCategory() == 'Science')
+    if (getCurrentCategoryByCurrentPlayerPlace() == 'Science')
       consoleCustom.log(scienceQuestions.shift())
-    if (currentCategory() == 'Sports')
+    if (getCurrentCategoryByCurrentPlayerPlace() == 'Sports')
       consoleCustom.log(sportsQuestions.shift())
-    if (currentCategory() == 'Rock')
+    if (getCurrentCategoryByCurrentPlayerPlace() == 'Rock')
       consoleCustom.log(rockQuestions.shift())
   }
 
@@ -98,7 +98,7 @@ const GameMaster = function (consoleCustom) {
         }
 
         consoleCustom.log(players[currentPlayer] + '\'s new location is ' + places[currentPlayer])
-        consoleCustom.log('The category is ' + currentCategory())
+        consoleCustom.log('The category is ' + getCurrentCategoryByCurrentPlayerPlace())
         askQuestion()
       } else {
         consoleCustom.log(players[currentPlayer] + ' is not getting out of the penalty box')
@@ -112,7 +112,7 @@ const GameMaster = function (consoleCustom) {
       }
 
       consoleCustom.log(players[currentPlayer] + '\'s new location is ' + places[currentPlayer])
-      consoleCustom.log('The category is ' + currentCategory())
+      consoleCustom.log('The category is ' + getCurrentCategoryByCurrentPlayerPlace())
       askQuestion()
     }
   }

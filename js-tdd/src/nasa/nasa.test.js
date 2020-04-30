@@ -67,47 +67,51 @@ describe('Nasa', () => {
 
     beforeEach(()=>{
         this.nasaZX80 = new NasaZX80(0,0,'N')
-        // this.nasaZX81 = new NasaZX81(0,0,'N')
+        this.nasaZX81 = new NasaZX81(0,0,'N')
     })
 
     it('init mars rover', () => {
         expect(this.nasaZX80.getPosition()).toEqual('0,0,N');
-        // expect(this.nasaZX81.getPosition()).toEqual('0,0,N');
+        expect(this.nasaZX81.getPosition()).toEqual('0,0,N');
     });
 
     it('first step foreward', () => {
         this.nasaZX80.move('F');
-        //this.nasaZX81.move('X');
+        this.nasaZX81.move('X');
         expect(this.nasaZX80.getPosition()).toEqual('0,1,N');
-        //expect(this.nasaZX81.getPosition()).toEqual('0,1,N');
+        expect(this.nasaZX81.getPosition()).toEqual('0,1,N');
     });
 
     it('first step backward', () => {
         this.nasaZX80.move('B');
-        //this.nasaZX81.move('Y');
+        this.nasaZX81.move('Y');
         expect(this.nasaZX80.getPosition()).toEqual('0,-1,N');
-        //expect(this.nasaZX81.getPosition()).toEqual('0,-1,N');
+        expect(this.nasaZX81.getPosition()).toEqual('0,-1,N');
     });
 
     it('first step right', () => {
         this.nasaZX80.move('R');
-        //this.nasaZX81.move('B');
+        this.nasaZX81.move('B');
         expect(this.nasaZX80.getPosition()).toEqual('0,0,E');
-        //expect(this.nasaZX81.getPosition()).toEqual('0,0,E');
+        expect(this.nasaZX81.getPosition()).toEqual('0,0,E');
     });
 
     it('first step left', () => {
         this.nasaZX80.move('L');
-        //this.nasaZX81.move('A');
+        this.nasaZX81.move('A');
         expect(this.nasaZX80.getPosition()).toEqual('0,0,W');
-        //expect(this.nasaZX81.getPosition()).toEqual('0,0,W');
+        expect(this.nasaZX81.getPosition()).toEqual('0,0,W');
     });
 
 
     it('second step left', () => {
         this.nasaZX80 = new NasaZX80(0,0,'E')
         this.nasaZX80.move('L');
+
+        this.nasaZX81 = new NasaZX81(0,0,'E')
+        this.nasaZX81.move('A');
         expect(this.nasaZX80.getPosition()).toEqual('0,0,N');
+        expect(this.nasaZX81.getPosition()).toEqual('0,0,N');
     });
 
 
@@ -115,40 +119,64 @@ describe('Nasa', () => {
     it('move Forward axe X to West', () => {
         this.nasaZX80 = new NasaZX80(3,-2,'W')
         this.nasaZX80.move('F');
-        expect(this.nasaZX80.getPosition()).toEqual('2,-2,W');
+
+        this.nasaZX81 = new NasaZX81(3,-2,'W')
+        this.nasaZX81.move('X');
+        expect(this.nasaZX81.getPosition()).toEqual('2,-2,W');
     });
 
 
     it('move Backward axe X to West', () => {
         this.nasaZX80 = new NasaZX80(3,-2,'W')
         this.nasaZX80.move('B');
+
+
+        this.nasaZX81 = new NasaZX81(3,-2,'W')
+        this.nasaZX81.move('Y');
         expect(this.nasaZX80.getPosition()).toEqual('4,-2,W');
+        expect(this.nasaZX81.getPosition()).toEqual('4,-2,W');
     });
 
     it('move Forward axe X to East', () => {
         this.nasaZX80 = new NasaZX80(3,-2,'E')
         this.nasaZX80.move('F');
+
+        this.nasaZX81 = new NasaZX81(3,-2,'E')
+        this.nasaZX81.move('X');
         expect(this.nasaZX80.getPosition()).toEqual('4,-2,E');
+        expect(this.nasaZX81.getPosition()).toEqual('4,-2,E');
     });
 
 
     it('move Backward axe X to East', () => {
         this.nasaZX80 = new NasaZX80(3,-2,'E')
         this.nasaZX80.move('B');
+        
+        this.nasaZX81 = new NasaZX81(3,-2,'E')
+        this.nasaZX81.move('Y');
         expect(this.nasaZX80.getPosition()).toEqual('2,-2,E');
+        expect(this.nasaZX81.getPosition()).toEqual('2,-2,E');
     });
 
     it('move Forward axe Y to South', () => {
         this.nasaZX80 = new NasaZX80(3,-2,'S')
         this.nasaZX80.move('F');
+        
+        this.nasaZX81 = new NasaZX81(3,-2,'S')
+        this.nasaZX81.move('X');
         expect(this.nasaZX80.getPosition()).toEqual('3,-3,S');
+        expect(this.nasaZX81.getPosition()).toEqual('3,-3,S');
     });
 
 
     it('move Backward axe Y to South', () => {
         this.nasaZX80 = new NasaZX80(3,-2,'S')
         this.nasaZX80.move('B');
+
+        this.nasaZX81 = new NasaZX81(3,-2,'S')
+        this.nasaZX81.move('Y');
         expect(this.nasaZX80.getPosition()).toEqual('3,-1,S');
+        expect(this.nasaZX81.getPosition()).toEqual('3,-1,S');
     });
 
     it('test scenario 1', () => {
@@ -159,63 +187,107 @@ describe('Nasa', () => {
         this.nasaZX80.move('B');
         this.nasaZX80.move('L');
         this.nasaZX80.move('F');
+
+
+        this.nasaZX81 = new NasaZX81(0,0,'N')
+        this.nasaZX81.move('X');
+        this.nasaZX81.move('X');
+        this.nasaZX81.move('B');
+        this.nasaZX81.move('Y');
+        this.nasaZX81.move('A');
+        this.nasaZX81.move('X');
+
         expect(this.nasaZX80.getPosition()).toEqual('-1,3,N');
+        expect(this.nasaZX81.getPosition()).toEqual('-1,3,N');
     });
 
     it('test planete ronde N foreward', () => {
         this.nasaZX80 = new NasaZX80(0,10,'N')
         this.nasaZX80.move('F');
 
+        this.nasaZX81 = new NasaZX81(0,90,'N')
+        this.nasaZX81.move('X');
+
         expect(this.nasaZX80.getPosition()).toEqual('0,-10,N');
+        expect(this.nasaZX81.getPosition()).toEqual('0,89,S');
     });
 
     it('test planete ronde N backward', () => {
         this.nasaZX80 = new NasaZX80(0,-10,'N')
         this.nasaZX80.move('B');
 
+        this.nasaZX81 = new NasaZX81(0,-90,'N')
+        this.nasaZX81.move('Y');
+
         expect(this.nasaZX80.getPosition()).toEqual('0,10,N');
+        expect(this.nasaZX81.getPosition()).toEqual('0,-89,N');
     });
 
     it('test planete ronde S foreward', () => {
         this.nasaZX80 = new NasaZX80(0,-10,'S')
         this.nasaZX80.move('F');
 
+        this.nasaZX81 = new NasaZX81(0,-90,'S')
+        this.nasaZX81.move('X');
+
         expect(this.nasaZX80.getPosition()).toEqual('0,10,S');
+        expect(this.nasaZX81.getPosition()).toEqual('0,-89,N');
     });
 
     it('test planete ronde S backward', () => {
         this.nasaZX80 = new NasaZX80(0,10,'S')
         this.nasaZX80.move('B');
 
+        this.nasaZX81 = new NasaZX81(0,90,'S')
+        this.nasaZX81.move('Y');
+
         expect(this.nasaZX80.getPosition()).toEqual('0,-10,S');
+        expect(this.nasaZX81.getPosition()).toEqual('0,89,S');
     });
 
     it('test planete ronde E foreward', () => {
         this.nasaZX80 = new NasaZX80(10,0,'E')
         this.nasaZX80.move('F');
 
+        this.nasaZX81 = new NasaZX81(180,0,'E')
+        this.nasaZX81.move('X');
+
         expect(this.nasaZX80.getPosition()).toEqual('-10,0,E');
+        expect(this.nasaZX81.getPosition()).toEqual('179,0,W');
     });
 
     it('test planete ronde E  backward', () => {
         this.nasaZX80 = new NasaZX80(-10,0,'E')
         this.nasaZX80.move('B');
 
+        this.nasaZX81 = new NasaZX81(180,0,'E')
+        this.nasaZX81.move('Y');
+
         expect(this.nasaZX80.getPosition()).toEqual('10,0,E');
+        expect(this.nasaZX81.getPosition()).toEqual('179,0,E');
     });
 
     it('test planete ronde W foreward', () => {
         this.nasaZX80 = new NasaZX80(-10,0,'W')
         this.nasaZX80.move('F');
 
+        this.nasaZX81 = new NasaZX81(180,0,'W')
+        this.nasaZX81.move('X');
+
         expect(this.nasaZX80.getPosition()).toEqual('10,0,W');
+        expect(this.nasaZX81.getPosition()).toEqual('179,0,E');
     });
 
     it('test planete ronde W backward', () => {
         this.nasaZX80 = new NasaZX80(10,0,'W')
         this.nasaZX80.move('B');
 
+
+        this.nasaZX81 = new NasaZX81(180,0,'W')
+        this.nasaZX81.move('Y');
+
         expect(this.nasaZX80.getPosition()).toEqual('-10,0,W');
+        expect(this.nasaZX81.getPosition()).toEqual('179,0,W');
     });
 
 });

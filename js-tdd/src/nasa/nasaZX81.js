@@ -48,41 +48,45 @@ class NasaZX81 extends Nasa {
     }
 
     rotation(move) {
-        if (move === 'R') {
+        if (move === 'B') {
             this.turnRight();
         }
-        if (move === 'L') {
+        if (move === 'A') {
             this.turnLeft()
         }
     }
 
     decrementAxeY(){
-        if (this.axeY === -10) {
-            this.axeY = 10;
+        if (this.axeY === -90) {
+            this.axeY = -89;
+            this.orientation = 'N';
         } else {
             this.axeY -= 1
         }
     }
     
     incrementAxeY(){
-        if (this.axeY === 10) {
-            this.axeY = -10;
+        if (this.axeY === 90) {
+            this.axeY = 89;
+            this.orientation = 'S';
         } else {
             this.axeY += 1
         }
     }
 
     incrementAxeX(){
-        if (this.axeX === 10) {
-            this.axeX = -10;
+        if (this.axeX === 180) {
+            this.axeX = 179;
+            this.orientation = 'W';
         } else {
             this.axeX += 1
         }
     }
 
     decrementAxeX(){
-        if (this.axeX === -10) {
-            this.axeX = 10;
+        if (this.axeX === 180) {
+            this.axeX = 179;
+            this.orientation = 'E';
         } else {
             this.axeX -= 1
         }

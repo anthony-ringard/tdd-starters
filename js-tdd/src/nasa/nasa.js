@@ -1,7 +1,8 @@
 'use strict';
+const cardinals = ['N', 'E', 'S', 'W'];
 
 class Nasa {
-   
+
     constructor(axeX, axeY, orientation) {
         this.axeX = axeX
         this.axeY = axeY
@@ -9,42 +10,56 @@ class Nasa {
     }
 
     getPosition() {
-        return this.axeX+','+this.axeY+','+this.orientation;
+        return this.axeX + ',' + this.axeY + ',' + this.orientation;
     }
 
     move(move) {
-        if (move === 'F') {
-           this.axeY += 1
-        }
 
-        if (move === 'B') {
+        if (move === 'F') {
+            this.axeY += 1
+        } else if (move === 'B') {
             this.axeY -= 1
 
+        } else {
+            this.rotation(move);
         }
 
-        const cardinals = ['N','E','S','W'];
-
-        cardinals.find(function(cardinal) {
-            
-        })
-
-        if (move === 'R') {
-            this.orientation = 'E'
-
-        }
-
-        if (move === 'L') {
-            this.orientation = 'W'
-
-        }
-        
-
-        
 
     }
 
 
+    rotation(move) {
 
+        let cardinal = cardinals.indexOf(this.orientation)
+
+        if (move === 'R') {
+            this.turnRight(cardinal);
+        }
+
+        if (move === 'L') {
+            this.turnLeft(cardinal)
+        }
+
+    }
+
+
+    turnRight(cardinal) {
+        if (cardinal === cardinals.length - 1) {
+            cardinal = -1
+        }
+        this.orientation = cardinals[cardinal + 1]
+
+    }
+
+
+    turnLeft(cardinal) {
+
+        if (cardinal === 0) {
+            cardinal = cardinals.length
+        }
+        this.orientation = cardinals[cardinal - 1]
+
+    }
 }
 
 module.exports = Nasa;

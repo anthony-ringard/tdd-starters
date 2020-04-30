@@ -89,7 +89,6 @@ class TrivialGame {
         this.console.log(this.getCurrentPlayerName() + ' is not getting out of the penalty box')
         this.isGettingOutOfPenaltyBox = false
       }
-
     } 
   
     if (!this.isCurrentPlayerInPenaltyBox()) {

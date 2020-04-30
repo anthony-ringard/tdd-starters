@@ -33,7 +33,7 @@ export class African extends Parrot {
 
 
 export class NorwegianBlue extends Parrot {
-
+    // Vrroum vroum
     getSpeed() {
         return (this.isNailed) ? 0 : super.getBaseSpeedWithVoltage(this.voltage);
     }

@@ -91,19 +91,71 @@ describe('Nasa', () => {
 
 
 
-
-
-
-    
-    xit('two step forward', () => {
-        const nasa = new Nasa(0,0,'N')
-
+    it('move Forward axe X to West', () => {
+        this.nasa = new Nasa(3,-2,'W')
         this.nasa.move('F');
-        this.nasa.move('F');
-
-        expect(this.nasa.getPosition()).toEqual('0,2,N');
+        expect(this.nasa.getPosition()).toEqual('2,-2,W');
     });
 
 
+    it('move Backward axe X to West', () => {
+        this.nasa = new Nasa(3,-2,'W')
+        this.nasa.move('B');
+        expect(this.nasa.getPosition()).toEqual('4,-2,W');
+    });
+
+    it('move Forward axe X to East', () => {
+        this.nasa = new Nasa(3,-2,'E')
+        this.nasa.move('F');
+        expect(this.nasa.getPosition()).toEqual('4,-2,E');
+    });
+
+
+    it('move Backward axe X to East', () => {
+        this.nasa = new Nasa(3,-2,'E')
+        this.nasa.move('B');
+        expect(this.nasa.getPosition()).toEqual('2,-2,E');
+    });
+
+    it('move Forward axe Y to South', () => {
+        this.nasa = new Nasa(3,-2,'S')
+        this.nasa.move('F');
+        expect(this.nasa.getPosition()).toEqual('3,-3,S');
+    });
+
+
+    it('move Backward axe Y to South', () => {
+        this.nasa = new Nasa(3,-2,'S')
+        this.nasa.move('B');
+        expect(this.nasa.getPosition()).toEqual('3,-1,S');
+    });
+
+    it('test scenario 1', () => {
+        this.nasa = new Nasa(0,0,'N')
+        this.nasa.move('F');
+        this.nasa.move('F');
+        this.nasa.move('R');
+        this.nasa.move('B');
+        this.nasa.move('L');
+        this.nasa.move('F');
+        expect(this.nasa.getPosition()).toEqual('-1,3,N');
+    });
+
+    xit('test planete ronde', () => {
+        this.nasa = new Nasa(0,0,'N')
+        this.nasa.move('F');
+        this.nasa.move('F');
+        this.nasa.move('F');
+        this.nasa.move('F');
+        this.nasa.move('F');
+        this.nasa.move('F');
+        this.nasa.move('F');
+        this.nasa.move('F');
+        this.nasa.move('F');
+        this.nasa.move('F');
+        this.nasa.move('F');
+
+        expect(this.nasa.getPosition()).toEqual('0,-10,N');
+    });
 
 });

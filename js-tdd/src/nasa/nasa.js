@@ -13,12 +13,52 @@ class Nasa {
         return this.axeX + ',' + this.axeY + ',' + this.orientation;
     }
 
-    move(move) {
 
+    getCardinalletIndex(){
+        return cardinals.indexOf(this.orientation);
+    }
+
+    move(move) {
+    
+       
         if (move === 'F') {
-            this.axeY += 1
-        } else if (move === 'B') {
-            this.axeY -= 1
+
+            if (this.orientation === 'S') {
+                if (this.axeY === -10) {
+                    this.axeY = 10;
+                }
+                this.axeY -= 1
+            }
+            else if (this.orientation === 'E') {
+                this.axeX += 1
+            }
+            else if (this.orientation === 'W') {
+                    this.axeX -= 1
+    
+            }else {
+                this.axeY += 1
+            }
+
+        } 
+        
+        else if (move === 'B') {
+
+            if (this.orientation === 'S') {
+                if (this.axeY === 10) {
+                    this.axeY = -10;
+                }
+                this.axeY += 1
+            }
+            else if (this.orientation === 'E') {
+                this.axeX -= 1
+            }
+            else if (this.orientation === 'W') {
+                this.axeX += 1
+
+            }else {
+                this.axeY -= 1
+            }
+
 
         } else {
             this.rotation(move);
@@ -27,38 +67,30 @@ class Nasa {
 
     }
 
-
     rotation(move) {
-
-        let cardinal = cardinals.indexOf(this.orientation)
-
         if (move === 'R') {
-            this.turnRight(cardinal);
+            this.turnRight();
         }
-
         if (move === 'L') {
-            this.turnLeft(cardinal)
+            this.turnLeft()
         }
+    }
 
+    turnRight() {
+        let cardinalIndex = this.getCardinalletIndex()
+        if (cardinalIndex === cardinals.length - 1) {
+            cardinalIndex = -1
+        }
+        this.orientation = cardinals[cardinalIndex + 1]
     }
 
 
-    turnRight(cardinal) {
-        if (cardinal === cardinals.length - 1) {
-            cardinal = -1
+    turnLeft() {
+        let cardinalIndex = this.getCardinalletIndex()
+        if (cardinalIndex === 0) {
+            cardinalIndex = cardinals.length
         }
-        this.orientation = cardinals[cardinal + 1]
-
-    }
-
-
-    turnLeft(cardinal) {
-
-        if (cardinal === 0) {
-            cardinal = cardinals.length
-        }
-        this.orientation = cardinals[cardinal - 1]
-
+        this.orientation = cardinals[cardinalIndex - 1]
     }
 }
 

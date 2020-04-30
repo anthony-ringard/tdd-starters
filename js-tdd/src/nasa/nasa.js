@@ -19,52 +19,11 @@ class Nasa {
     }
 
     move(move) {
-    
-       
-        if (move === 'F') {
-
-            if (this.orientation === 'S') {
-                if (this.axeY === -10) {
-                    this.axeY = 10;
-                }
-                this.axeY -= 1
-            }
-            else if (this.orientation === 'E') {
-                this.axeX += 1
-            }
-            else if (this.orientation === 'W') {
-                    this.axeX -= 1
-    
-            }else {
-                this.axeY += 1
-            }
-
-        } 
-        
-        else if (move === 'B') {
-
-            if (this.orientation === 'S') {
-                if (this.axeY === 10) {
-                    this.axeY = -10;
-                }
-                this.axeY += 1
-            }
-            else if (this.orientation === 'E') {
-                this.axeX -= 1
-            }
-            else if (this.orientation === 'W') {
-                this.axeX += 1
-
-            }else {
-                this.axeY -= 1
-            }
-
-
-        } else {
+        if (move === 'F' || move === 'B') {
+            this.translation(move);
+         } else {
             this.rotation(move);
         }
-
-
     }
 
     rotation(move) {
@@ -91,6 +50,102 @@ class Nasa {
             cardinalIndex = cardinals.length
         }
         this.orientation = cardinals[cardinalIndex - 1]
+    }
+
+    translation(move){
+        if (move === 'F') {
+            this.moveForeward();
+        }
+        if (move === 'B') {
+            this.moveBackward();
+        }
+    }
+
+    moveForeward() {
+        if (this.orientation === 'S') {
+            this.moveForewardToSouth()
+        } else if(this.orientation === 'N') {
+            this.moveForewardToNorth()
+        } else if(this.orientation === 'E') {
+            this.moveForewardToEast()
+        } else {
+            this.moveForewardToWest() 
+        } 
+    }
+
+    moveForewardToSouth(){
+        this.decrementAxeY();
+    }
+
+    moveForewardToNorth(){
+        this.incrementAxeY();
+    }
+
+    moveForewardToEast(){
+        this.incrementAxeX();
+    }
+
+    moveForewardToWest(){
+        this.decrementAxeX()
+    }
+    moveBackward() {
+        if (this.orientation === 'S') {
+            this.movebackwardToSouth()
+        } else if(this.orientation === 'N') {
+            this.moveBackwardToNorth()
+        } else if(this.orientation === 'E') {
+            this.moveBackwardToEast()
+        } else {
+            this.moveBackwardToWest()
+        }
+    }
+
+    movebackwardToSouth(){
+        this.incrementAxeY();
+    }
+
+    moveBackwardToNorth(){
+        this.decrementAxeY();
+    }
+
+    moveBackwardToEast(){
+        this.decrementAxeX();
+    }
+
+    moveBackwardToWest(){
+        this.incrementAxeX();
+    }
+
+    decrementAxeY(){
+        if (this.axeY === -10) {
+            this.axeY = 10;
+        } else {
+            this.axeY -= 1
+        }
+    }
+    
+    incrementAxeY(){
+        if (this.axeY === 10) {
+            this.axeY = -10;
+        } else {
+            this.axeY += 1
+        }
+    }
+
+    incrementAxeX(){
+        if (this.axeX === 10) {
+            this.axeX = -10;
+        } else {
+            this.axeX += 1
+        }
+    }
+
+    decrementAxeX(){
+        if (this.axeX === -10) {
+            this.axeX = 10;
+        } else {
+            this.axeX -= 1
+        }
     }
 }
 

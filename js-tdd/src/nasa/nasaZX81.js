@@ -60,6 +60,7 @@ class NasaZX81 extends Nasa {
         if (this.axeY === -90) {
             this.axeY = -89;
             this.orientation = 'N';
+            this.updateMeridian();
         } else {
             this.axeY -= 1
         }
@@ -69,6 +70,7 @@ class NasaZX81 extends Nasa {
         if (this.axeY === 90) {
             this.axeY = 89;
             this.orientation = 'S';
+            this.updateMeridian();
         } else {
             this.axeY += 1
         }
@@ -91,6 +93,12 @@ class NasaZX81 extends Nasa {
             this.axeX -= 1
         }
 
+    }
+
+    updateMeridian(){
+        if(this.axeX  != 0){
+            this.axeX = 180 - this.axeX;
+        }
     }
 }
 

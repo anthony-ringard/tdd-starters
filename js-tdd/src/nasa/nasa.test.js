@@ -290,4 +290,26 @@ describe('Nasa', () => {
         expect(this.nasaZX81.getPosition()).toEqual('179,0,W');
     });
 
+    it('test planete ronde S foreward with meridian', () => {
+        this.nasaZX80 = new NasaZX80(0,10,'S')
+        this.nasaZX80.move('B');
+
+        this.nasaZX81 = new NasaZX81(15,-90,'S')
+        this.nasaZX81.move('X');
+
+        expect(this.nasaZX80.getPosition()).toEqual('0,-10,S');
+        expect(this.nasaZX81.getPosition()).toEqual('165,-89,N');
+    });
+
+    it('test planete ronde N foreward with meridian', () => {
+        this.nasaZX80 = new NasaZX80(0,10,'N')
+        this.nasaZX80.move('F');
+
+        this.nasaZX81 = new NasaZX81(157,90,'N')
+        this.nasaZX81.move('X');
+
+        expect(this.nasaZX80.getPosition()).toEqual('0,-10,N');
+        expect(this.nasaZX81.getPosition()).toEqual('23,89,S');
+    });
+
 });
